@@ -1,0 +1,17 @@
+# Compiled Executables (Windows)
+*.exe
+*.out
+*.o
+*.obj
+
+# Folder containing compiled binaries
+output/
+bin/
+
+# VS Code internal settings (Optional, but keeps repo clean)
+.vscode/
+*.history
+
+# Temporary files
+*.tmp
+*.log
