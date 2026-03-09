@@ -48,7 +48,7 @@ int main() {
     // shorter arrAY TO STORE remaining time
     b[9] = 9999; // Placeholder for comparison
     for(time=0; count!=n; time++) {
-        smallest = 9;0
+        smallest = 9;
         for(i=0; i<n; i++) {
             if(a[i] <= time && b[i] < b[smallest] && b[i] > 0)
                 smallest = i;
