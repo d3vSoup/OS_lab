@@ -8,69 +8,51 @@ In Non-Preemptive, if P1 starts first, P2 has to wait. In Preemptive, as soon as
  P1 is paused so P2 can finish.
 */
 
-#include <stdio.h>
-
-struct Process {
-    int pid;      // Process ID
-    int bt;       // Burst Time
-    int art;      // Arrival Time
-    int pri;      // Priority
-    int remaining_bt; 
-};
+#include<stdio.h>
 
 int main() {
-    int n, i, t = 0, completed = 0, shortest = 0;
-    int min_pri = 9999; // Represents infinity
-    float total_wt = 0, total_tat = 0;
-    int finish_time;
-    struct Process p[10];
+    int arrival[10], burst[10], priority[10], temp_burst[10];
+    int i, count = 0, time = 0, n, smallest;
+    double total_wait = 0, total_turn = 0;
 
     printf("Enter number of processes: ");
     scanf("%d", &n);
 
-    for (i = 0; i < n; i++) {
-        p[i].pid = i + 1;
-        printf("P[%d] Arrival, Burst, Priority: ", i + 1);
-        scanf("%d %d %d", &p[i].art, &p[i].bt, &p[i].pri);
-        p[i].remaining_bt = p[i].bt;
+    for(i = 0; i < n; i++) {
+        printf("P%d - Arrival, Burst, Priority: ", i + 1);
+        scanf("%d %d %d", &arrival[i], &burst[i], &priority[i]);
+        temp_burst[i] = burst[i]; // Store original burst for TAT/WT calc
     }
 
-    while (completed != n) {
-        shortest = -1;
-        min_pri = 9999;
+    // Set a dummy high-priority value for comparison (high number = low priority)
+    priority[9] = 9999; 
+    burst[9] = 9999;
 
-        // Find process with highest priority available at current time 't'
-        for (i = 0; i < n; i++) {
-            if (p[i].art <= t && p[i].remaining_bt > 0 && p[i].pri < min_pri) {
-                min_pri = p[i].pri;
-                shortest = i;
+    printf("\nProcess Execution Sequence:\n");
+
+    for(time = 0; count != n; time++) {
+        smallest = 9; // Reset to dummy index
+
+        for(i = 0; i < n; i++) {
+            // Check if process has arrived and has higher priority than current selection
+            if(arrival[i] <= time && priority[i] < priority[smallest] && burst[i] > 0) {
+                smallest = i;
             }
         }
 
-        if (shortest == -1) {
-            t++;
-            continue;
-        }
+        burst[smallest]--; // Execute the highest priority process for 1 unit
 
-        // Execute for 1 unit of time
-        p[shortest].remaining_bt--;
-
-        // If a process is finished
-        if (p[shortest].remaining_bt == 0) {
-            completed++;
-            finish_time = t + 1;
-            int wt = finish_time - p[shortest].bt - p[shortest].art;
-            if (wt < 0) wt = 0;
-            
-            total_wt += wt;
-            total_tat += (finish_time - p[shortest].art);
-            
-            printf("\nP[%d] finished at time %d | WT: %d | TAT: %d", 
-                   p[shortest].pid, finish_time, wt, finish_time - p[shortest].art);
+        // If process finishes
+        if(burst[smallest] == 0) {
+            count++;
+            int completion_time = time + 1;
+            total_wait += (completion_time - arrival[smallest] - temp_burst[smallest]);
+            total_turn += (completion_time - arrival[smallest]);
         }
-        t++;
     }
 
-    printf("\n\nAverage Waiting Time: %.2f", total_wt / n);
-    printf("\nAverage Turnaround Time: %.2f\n", total_tat / n);
+    printf("\n\nAvg WT: %.2f", total_wait / n);
+    printf("\nAvg TAT: %.2f\n", total_turn / n);
+
+    return 0;
 }
