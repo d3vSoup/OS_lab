@@ -1,4 +1,4 @@
-// Finishes BT execution regardless of if othe rprocess has higher priority or not. 
+// Finishes BT execution regardless of if other process has higher priority or not. 
 /*
 Imagine three tasks:
 P1: Priority 2 (Low), Burst 5ms

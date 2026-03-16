@@ -1,7 +1,9 @@
 // SJF -- > non preemptive... selects the one that is the shortest jon frist --> shortest burst time 
 // WT --> since jobs finish faster thus the avg WT is low 
-// RULE : Once a process starts, it cannot be stopped until it is finished, even if a shorter job arrives halfway through.
-// The "easy" trick here is to use a simple Bubble Sort to arrange the processes by Burst Time before calculating.
+// RULE : Once a process starts, it cannot be stopped until it is finished, even if a shorter job arrives 
+//halfway through.
+// The "easy" trick here is to use a simple Bubble Sort to arrange the processes by Burst Time before 
+//calculating.
 
 #include<stdio.h>
 int main() {
@@ -20,7 +22,7 @@ int main() {
     // Simple Bubble Sort to sort by Burst Time
     for(i=0; i<n; i++)
         for(j=i+1; j<n; j++) // j starts from the next one to i.
-            if(bt[i] > bt[j]) { // if rpev process is larger move it to end by sortiung thus the shortes bt ones are earlier
+            if(bt[i] > bt[j]) { // if prev process is larger move it to end by sorting thus the shortest bt ones are earlier
                 temp=bt[i]; bt[i]=bt[j]; bt[j]=temp;
                 temp=p[i]; p[i]=p[j]; p[j]=temp;
             }
